@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const connectDB = require("./database/db");
 const requestLogger = require("./middleware/logger");
 const { globalErrorHandler, notFoundHandler } = require("./middleware/errorHandler");
 const todosRouter = require("./routes/todos");
@@ -22,6 +23,8 @@ app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`API alive on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`API alive on port ${PORT}`);
+  });
 });
